@@ -3,10 +3,9 @@
 $servername = "localhost";
 $username = "michatartak";
 $password = "12345";
-$dbname = "michatartak_webshop";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password);
 
 // Check connection
 if ($conn->connect_error) {
@@ -22,8 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 
 $sql = "SELECT name, price FROM plants";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_all($result, MYSQLI_ASSOC);
+//$result = $conn->query($sql) ->fetch_all(MYSQLI_ASSOC);
+
+//echo " " . $result["name"]. " - Price: " . $result["price"]. ".- ";
+
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +50,7 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h1 class="title">Jungleshop</h1>
+                <h1 class="title">Junglepedia</h1>
             </div>
         </div>
         <div class="row">
@@ -144,11 +145,11 @@ $row = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     <li class="list-inline-item"><a href="#">About</a></li>
                     <li class="list-inline-item"><a href="#">Terms</a></li>
                     <li class="list-inline-item"><a href="#">Policy</a></li>
-                    
-                        <button type="submit" value="Submit"><a href="SignIn.php">Sign out</button>
-                    
+                    <form method="POST">
+                        <button type="submit" value="Submit">Sign out</button>
+                    </form>
                 </ul>
-                <p class="copyright footer">Jungleshop © 2021</p>
+                <p class="copyright footer">Company Name © 2021</p>
             </footer>
         </div>
     </div>

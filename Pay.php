@@ -8,24 +8,22 @@ $dbname = "michatartak_webshop";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-session_start();
-
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $_SESSION['fname'] = $_POST['fname'];
-    $_SESSION['lname'] = $_POST['lname'];
-    $_SESSION['email'] = $_POST['email'];
-    $_SESSION['pword'] = $_POST['pword'];
-
-    $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES ('" . $_POST['fname']. "', '" . $_POST['lname']. "', '" . $_POST['email']. "', '" . $_POST['pword']. "')";
-    //$conn->exec($sql);
-    $conn->query($sql);
-    header('Location: index.php');
- 
-    
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
 }
 
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    session_start ();
+    session_unset ();
+    session_destroy ();
+    ob_end_flush ();
+    header("location: ../index.php");
+}
 
-
+$sql = "SELECT name, price FROM plants";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_all($result, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -47,17 +45,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
+
     <div class="container">
         <div class="row">
-        <div class="row">
-            <div class="col-sm-5">
-                <h1 class="subpagestitle"><a href="Shop.php">Jungleshop</a></h1>
+            <div class="col-sm-12">
+                <h1 class="title"><a href="index.php">Jungleshop</a></h1>
             </div>
-           <div class="col-sm-7">
-                <ul class="list-inline navBarSubPage">
-                    <li class="list-inline-item">plants</li>
-                    <li class="list-inline-item">infos</li>
-                </ul>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 firstCol">
+                <p class="navBar">plants</p>
             </div>
         </div>
         <div class="row">
@@ -66,37 +63,39 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </hr>
             </div>
             <div class="col-sm-2">
-                <p class="titleBox">Register</p>
+                <p class="titleBox">   OUR JUNGLE</p>
             </div>
             <div class="col-sm-5">
                 <hr>
                 </hr>
             </div>
         </div>
+    </div>
 
-            <form action="SignIn.php" method="post">
-                <label for="fname">Firstname*</label><br>
-                <input type="text" id="fname" name="fname" required><br>
-                <label for="lname">Lastname*</label><br>
-                <input type="text" id="lname" name="lname" required><br>
-                <label for="email">Email*</label><br>
-                <input type="text" id="email" name="email" required><br>
-                <label for="pword">Password*</label><br>
-                <input type="password" id="pword" name="pword" required><br>
-                <br>
-                <input type="submit" value="Submit">
-            </form>
-
+    <div class="container">
+        <div class="row firstRow">
+            <div class="col-sm-12">
+                <img class="firstPagePictures" src="../src/deMichi.png">
+            </div>
+        </div>
         <br> <br> <br>
+	<div class="donation">
+		<p>Donate money to +41 78 636 25 10 via twint</p> 
+		<a href="https://www.twint.ch/en/download/">Download twint now</a>
+	</div>
+	<br><br>
         <div class="footer-basic">
             <footer>
                 <ul class="list-inline footer">
-                    <li class="list-inline-item"><a href="index.php">Home</a></li>
+                    <li class="list-inline-item"><a href="#">Home</a></li>
                     <li class="list-inline-item"><a href="#">About</a></li>
                     <li class="list-inline-item"><a href="#">Terms</a></li>
                     <li class="list-inline-item"><a href="#">Policy</a></li>
+                    <form method="POST">
+                        <button type="submit" value="Submit">Sign out</button>
+                    </form>
                 </ul>
-                <p class="copyright footer">Jungleshop Name © 2020</p>
+                <p class="copyright footer">Company Name © 2021</p>
             </footer>
         </div>
     </div>
